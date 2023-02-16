@@ -1,5 +1,6 @@
-module "log_bucket_label" {
-  source     = "git::https://github.com/cloudposse/terraform-null-label.git?ref=tags/0.25.0"
+module "label_log_bucket" {
+  source     = "cloudposse/label/null"
+  version    = "0.25.0"
   attributes = ["loadbalancer", "logs"]
   context    = module.this.context
 }
@@ -22,7 +23,7 @@ resource "aws_s3_bucket_lifecycle_configuration" "log_bucket" {
   bucket = aws_s3_bucket.log_bucket.id
 
   rule {
-    id     = "${module.log_bucket_label.id}-expiration"
+    id     = "${module.label_log_bucket.id}-expiration"
     status = "Enabled"
 
     expiration {
@@ -51,10 +52,10 @@ resource "aws_s3_bucket_acl" "log_bucket" {
 }
 
 resource "aws_s3_bucket" "log_bucket" {
-  bucket        = module.log_bucket_label.id
+  bucket        = module.label_log_bucket.id
   force_destroy = !(module.this.stage == "prod")
 
-  tags = module.log_bucket_label.tags
+  tags = module.label_log_bucket.tags
 }
 
 data "aws_iam_policy_document" "ipfs_cluster_alb" {

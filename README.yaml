@@ -1,0 +1,24 @@
+name: terraform-aws-ipfs-cluster
+license: "AGPL3"
+gitlab_repo: guardianproject-ops/terraform-aws-ipfs-cluster
+
+related:
+- name: "terraform-null-label"
+  description: "Terraform module designed to generate consistent names and tags for resources. Use terraform-null-label to implement a strict naming convention."
+  url: "https://github.com/cloudposse/terraform-null-label"
+
+description: |-
+  Terraform module to deploy an IPFS cluster into AWS.
+
+  ![Architecture diagram](./docs/terraform-aws-ipfs-cluster.png)
+include:
+- "docs/terraform.md"
+- "docs/targets.md"
+
+contributors:
+  - name: irl
+    gitlab: irlxyz
+    gitlab_id: 5895869
+  - name: redaranj
+    gitlab: redaranj
+    avatar: https://secure.gravatar.com/avatar/a4bb148b2c1a615f4b77b1e192f8e410?s=192&d=identicon

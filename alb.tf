@@ -19,6 +19,12 @@ locals {
   instance_id = aws_instance.default[0].id
 }
 
+
+data "aws_route53_zone" "this" {
+  name         = var.dns_zone_name
+  private_zone = false
+}
+
 module "label_alb" {
   source     = "cloudposse/label/null"
   version    = "0.25.0"
@@ -244,7 +250,11 @@ resource "aws_lb_target_group" "ipfs_gateway" {
 }
 
 resource "aws_acm_certificate" "ipfs_certificate" {
-  domain_name       = var.domain_name
+  domain_name = var.domain_name
+  subject_alternative_names = [
+    "DNS:pinning.${var.domain_name}",
+    "DNS:gateway.${var.domain_name}",
+  ]
   validation_method = "DNS"
 
   tags = module.label_alb.tags
@@ -252,6 +262,29 @@ resource "aws_acm_certificate" "ipfs_certificate" {
   lifecycle {
     create_before_destroy = true
   }
+}
+
+resource "aws_route53_record" "validation" {
+  provider = aws.dns
+  for_each = {
+    for dvo in aws_acm_certificate.ipfs_certificate.domain_validation_options : dvo.domain_name => {
+      name   = dvo.resource_record_name
+      record = dvo.resource_record_value
+      type   = dvo.resource_record_type
+    }
+  }
+
+  allow_overwrite = true
+  name            = each.value.name
+  records         = [each.value.record]
+  ttl             = 60
+  type            = each.value.type
+  zone_id         = data.aws_route53_zone.this.zone_id
+}
+
+resource "aws_acm_certificate_validation" "ipfs_certificate" {
+  certificate_arn         = aws_acm_certificate.ipfs_certificate.arn
+  validation_record_fqdns = [for record in aws_route53_record.validation : record.fqdn]
 }
 
 resource "aws_lb_listener" "network_listener" {
@@ -344,4 +377,25 @@ resource "aws_lb_listener_rule" "ipfs_gateway" {
 resource "aws_lb_target_group_attachment" "ipfs_gateway" {
   target_group_arn = aws_lb_target_group.ipfs_gateway.arn
   target_id        = local.instance_id
+}
+
+resource "aws_route53_record" "swarm" {
+  provider = aws.dns
+  name     = "swarm.${var.domain_name}"
+  type     = "CNAME"
+  records  = [aws_lb.network.dns_name]
+  zone_id  = data.aws_route53_zone.this.id
+}
+
+resource "aws_route53_record" "cluster" {
+  provider = aws.dns
+  for_each = [
+    var.domain_name,
+    "pinning.${var.domain_name}",
+    "gateway.${var.domain_name}"
+  ]
+  name    = each.value
+  type    = "CNAME"
+  records = [aws_lb.application.dns_name]
+  zone_id = data.aws_route53_zone.this.id
 }
