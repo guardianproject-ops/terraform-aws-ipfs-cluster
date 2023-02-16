@@ -21,6 +21,7 @@ locals {
 
 
 data "aws_route53_zone" "this" {
+  provider     = aws.dns
   name         = var.dns_zone_name
   private_zone = false
 }
