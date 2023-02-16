@@ -385,6 +385,7 @@ resource "aws_route53_record" "swarm" {
   name     = "swarm.${var.domain_name}"
   type     = "CNAME"
   records  = [aws_lb.network.dns_name]
+  ttl      = 300
   zone_id  = data.aws_route53_zone.this.id
 }
 
@@ -398,5 +399,6 @@ resource "aws_route53_record" "cluster" {
   name    = each.value
   type    = "CNAME"
   records = [aws_lb.application.dns_name]
+  ttl     = 300
   zone_id = data.aws_route53_zone.this.id
 }
