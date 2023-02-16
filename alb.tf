@@ -253,8 +253,8 @@ resource "aws_lb_target_group" "ipfs_gateway" {
 resource "aws_acm_certificate" "ipfs_certificate" {
   domain_name = var.domain_name
   subject_alternative_names = [
-    "DNS:pinning.${var.domain_name}",
-    "DNS:gateway.${var.domain_name}",
+    "pinning.${var.domain_name}",
+    "gateway.${var.domain_name}",
   ]
   validation_method = "DNS"
 
