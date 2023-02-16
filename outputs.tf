@@ -5,10 +5,7 @@ output "ec2_instance_id" {
 }
 
 output "domain_name" {
-  description = <<EOT
-    The base domain name for the deployment. Subdomains of this domain will be used for the gateway, swarm and pinning
-    services.
-  EOT
+  description = "The base domain name for the deployment. Subdomains of this domain will be used for the gateway, swarm and pinning services."
   value       = var.domain_name
 }
 

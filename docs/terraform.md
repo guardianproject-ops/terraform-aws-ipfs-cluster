@@ -90,7 +90,7 @@
 | <a name="input_context"></a> [context](#input\_context) | Single object for setting entire context at once.<br>See description of individual variables for details.<br>Leave string and numeric variables as `null` to use default value.<br>Individual variable settings (non-null) override settings in context object,<br>except for attributes, tags, and additional\_tag\_map, which are merged. | `any` | <pre>{<br>  "additional_tag_map": {},<br>  "attributes": [],<br>  "delimiter": null,<br>  "enabled": true,<br>  "environment": null,<br>  "id_length_limit": null,<br>  "label_key_case": null,<br>  "label_order": [],<br>  "label_value_case": null,<br>  "name": null,<br>  "namespace": null,<br>  "regex_replace_chars": null,<br>  "stage": null,<br>  "tags": {}<br>}</pre> | no |
 | <a name="input_delimiter"></a> [delimiter](#input\_delimiter) | Delimiter to be used between `namespace`, `environment`, `stage`, `name` and `attributes`.<br>Defaults to `-` (hyphen). Set to `""` to use no delimiter at all. | `string` | `null` | no |
 | <a name="input_dns_zone_name"></a> [dns\_zone\_name](#input\_dns\_zone\_name) | The name of the DNS zone hosted in Route 53 that should be used to create the DNS records. | `string` | n/a | yes |
-| <a name="input_domain_name"></a> [domain\_name](#input\_domain\_name) | The base domain name for the deployment. Subdomains of this domain will be used for the gateway, swarm and pinning<br>    services. | `string` | n/a | yes |
+| <a name="input_domain_name"></a> [domain\_name](#input\_domain\_name) | The base domain name for the deployment. Subdomains of this domain will be used for the gateway, swarm and pinning services. | `string` | n/a | yes |
 | <a name="input_ebs_volume_disk_allocation_gb"></a> [ebs\_volume\_disk\_allocation\_gb](#input\_ebs\_volume\_disk\_allocation\_gb) | How much disk space to allocate for the EC2 instance's data EBS volume. | `number` | `null` | no |
 | <a name="input_ec2_disk_allocation_gb"></a> [ec2\_disk\_allocation\_gb](#input\_ec2\_disk\_allocation\_gb) | How much disk space to allocate for the EC2 instance's root EBS volume. | `number` | `null` | no |
 | <a name="input_ec2_instance_type"></a> [ec2\_instance\_type](#input\_ec2\_instance\_type) | The EC2 instance class to use. | `string` | `null` | no |
@@ -110,7 +110,7 @@
 
 | Name | Description |
 |------|-------------|
-| <a name="output_domain_name"></a> [domain\_name](#output\_domain\_name) | The base domain name for the deployment. Subdomains of this domain will be used for the gateway, swarm and pinning<br>    services. |
+| <a name="output_domain_name"></a> [domain\_name](#output\_domain\_name) | The base domain name for the deployment. Subdomains of this domain will be used for the gateway, swarm and pinning services. |
 | <a name="output_ec2_instance_id"></a> [ec2\_instance\_id](#output\_ec2\_instance\_id) | The instance ID of the EC2 instance. |
 | <a name="output_gateway_domain_name"></a> [gateway\_domain\_name](#output\_gateway\_domain\_name) | The domain name of the gateway endpoint. |
 | <a name="output_pinning_domain_name"></a> [pinning\_domain\_name](#output\_pinning\_domain\_name) | The domain name of the pinning endpoint. |
