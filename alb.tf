@@ -389,11 +389,11 @@ resource "aws_route53_record" "swarm" {
 
 resource "aws_route53_record" "cluster" {
   provider = aws.dns
-  for_each = [
+  for_each = toset([
     var.domain_name,
     "pinning.${var.domain_name}",
     "gateway.${var.domain_name}"
-  ]
+  ])
   name    = each.value
   type    = "CNAME"
   records = [aws_lb.application.dns_name]
